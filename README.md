@@ -1,6 +1,7 @@
 # MarioConsoleGame
 
 MarioConsoleGame is a Command Line Interface (CLI) 2D game developed as part of the Programming II course. The game is inspired by classic 2D platformers and aims to provide an enjoyable gaming experience within the command line interface.
+![Mario Console Game](https://github.com/AhmedSehly20/MarioConsoleGame/raw/main/Screen.png)
 
 ## Features
 
