@@ -1,0 +1,841 @@
+#include <iostream>
+#include <Windows.h>
+#include <stdio.h>
+#include <conio.h>
+#include <string>
+
+using namespace std;
+
+const int rows = 47;
+const int columns = 300;
+char map[47][1500];
+int i, k, r, c, a = 0, b, grr, grc;
+int LevelPointer;
+bool GameOver;
+bool PlayerDead;
+int groundurface = 44;
+int cthbh = 0;
+
+
+void ClearMap()
+{
+	for (int r = 0; r < rows; r++)
+		for (c = 0; c < 1500; c++)
+			map[r][c] = ' ';
+}
+
+class Art
+{
+protected:
+
+	int skyRow = 0;
+	int skyColumn = 0;
+
+	int groundRow = 44;
+	int groundColumn = 0;
+
+	int obstacleRow = 28;
+	int obstacleColumn = 12;
+
+	int ladderRow = 25;
+	int ladderColumn = 85;
+
+	int batEnemyRow = 9;
+	int batEnemyColumn = 150;
+
+	string sky =
+
+		"          .-~~~-.                           .-~~~-.                            .-~~~-.                           .-~~~-.                           .-~~~-.                           .-~~~-.                                 .-~~~-.                            .-~~~-.                       \n"
+		"  .- ~ ~-(       )_ _               .- ~ ~-(       )_ _                .- ~ ~-(       )_ _               .- ~ ~-(       )_ _               .- ~ ~-(       )_ _               .- ~ ~-(       )_ _                     .- ~ ~-(       )_ _                .- ~ ~-(       )_ _                                        \n"
+		" /                     ~ -.        /                     ~ -.         /                     ~ -.        /                     ~ -.        /                     ~ -.        /                     ~ -.              /                     ~ -.         /                     ~ -.                                 \n"
+		"|                           )     |                           )      |                           )     |                           )     |                           )     |                           )           |                           )      |                           )                                       \n"
+		"\\                         .'      \\                         .'       \\                         .'      \\                         .'      \\                         .'      \\                         .'       \\                         .'       \\                         .'                                              \n"
+		"  ``~- . _____________ . -~           ~- . _____________ . -~             ~- . _____________ . -~           ~- . _____________ . -~           ~- . _____________ . -~           ~- . _____________ . -~                ~- . _____________ . -~             ~- . _____________ . -~                            \n"
+		"______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________\n";
+
+	string ground = "_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________\n"
+		"_|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|_|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|_|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|_|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|_|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___| \n";
+
+	unsigned char obstacle[1000] = { 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32, 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32, 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,205,205,205,205,205,205,205,205,205,205,205,10,
+		   32,32,32,32,32,32,32,32,32,32,32,32,32,32,32, 32,32,32,32,32,32,32,32,32, 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,10,
+		   32,32,32,32,32,32,32,32,32,32,32,32,32, 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,10,
+			32,32,32,32,32,32,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,0 };
+
+	unsigned char ladder[1000] =
+	{ 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206 ,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206 ,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206 ,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206 ,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206 ,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206 ,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206 ,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206 ,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206 ,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206,10,
+	 206,205,205,205,205,205,205,205,205,205,205,205,205,205,206,10,0 };
+
+	unsigned char batEnemy[1000] = { 32, 32, 40, 95, 32, 32, 32, 32, 46, 46, 32, 32, 32, 32, 95, 41, 10,
+			   32, 32, 47, 32, 96 ,39, 45, 45, 41, 32, 40, 45, 45 ,39, 96, 32, 92, 10,
+			   32, 47 ,32, 32, 95, 44, 45, 39, 92 ,95, 47, 39, 45, 44, 95, 32, 32, 92, 10,
+			   47, 46, 45, 39, 32, 32, 32, 32, 32, 39, 32, 32, 32, 32, 32, 39, 45, 46 ,92, 0 };
+
+public:
+
+	void DrawSky()
+	{
+		r = this->skyRow;
+		c = this->skyColumn;
+
+		for (i = 0; i < this->sky.length(); i++)
+		{
+			if (this->sky[i] != '\n')
+				map[r][c++] = this->sky[i];
+
+			if (this->sky[i] == '\n')
+			{
+				r++;
+				c = this->skyColumn;
+			}
+		}
+	}
+
+	void DrawGround()
+	{
+		r = this->groundRow;
+		c = this->groundColumn;
+
+		for (i = 0; i < this->ground.length(); i++)
+		{
+			if (this->ground[i] != '\n')
+				map[r][c++] = this->ground[i];
+
+			if (this->ground[i] == '\n')
+			{
+				r++;
+				c = this->groundColumn;
+			}
+		}
+	}
+
+	void Drawladder()
+	{
+		r = this->ladderRow;
+		c = this->ladderColumn;
+
+		for (i = 0; this->ladder[i] != 0; i++)
+		{
+			if (this->ladder[i] != 10)
+				map[r][c++] = this->ladder[i];
+
+			if (this->ladder[i] == 10)
+			{
+				r++;
+				c = this->ladderColumn;
+			}
+		}
+	}
+
+	void DrawObstacle()
+	{
+		r = this->obstacleRow;
+		c = this->obstacleColumn;
+
+		for (i = 0; this->obstacle[i] != 0; i++)
+		{
+			if (this->obstacle[i] != 10)
+				map[r][c++] = this->obstacle[i];
+
+			if (this->obstacle[i] == 10)
+			{
+				r += 4;
+				c = this->obstacleColumn;
+			}
+		}
+	}
+
+	void DrawBatEnemy()
+	{
+		r = this->batEnemyRow;
+		c = this->batEnemyColumn;
+
+		for (i = 0; this->batEnemy[i] != 0; i++)
+		{
+			if (this->batEnemy[i] != 10)
+				map[r][c++] = this->batEnemy[i];
+
+			if (this->batEnemy[i] == 10)
+			{
+				r++;
+				c = this->batEnemyColumn;
+			}
+		}
+	}
+
+	inline int getLadderRow() { return this->ladderRow; }
+	inline int getLadderColumn() { return this->ladderColumn; }
+
+	inline int getBatEnemyRow() { return this->batEnemyRow; }
+	inline int getBatEnemyColumn() { return this->batEnemyColumn; }
+
+	void setLadderRowTo(int _ladderRow) { this->ladderRow = _ladderRow; }
+	void setLadderColumnTo(int _ladderColumn) { this->ladderColumn = _ladderColumn; }
+
+	void setBatEnemyRowTo(int _batEnemyRow) { this->batEnemyRow = _batEnemyRow; }
+	void setBatEnemyColumnTo(int _batEnemyColumn) { this->batEnemyColumn = _batEnemyColumn; }
+
+	
+};
+
+Art art;
+
+class Hero
+{
+protected:
+	unsigned char draw[96] =
+	{ 32,32,32,220,219,219,219,219,220,220,10,
+	 32,32,32,220,223,219,223,222,192,196,191,10,
+	 32,32,32,219,220,222,221,220,219,220,217,10,
+	 32,32,32,192,220,220,220,220,196,217,32,10,
+	 220,219,219,219,177,219,219,177,219,219,219,220,10
+	 ,177,177,219,220,177,177,177,177,220,219,177,177,10,
+	 32,32,177,177,177,223,177,177,177,10,
+	 220,219,219,219,32,32,32,219,219,219,220 };
+
+
+	int heroRow = 29;
+	int heroColumn = 0;
+	int bulletRow = heroRow + 5;
+	int bulletColumn = heroColumn + 12;
+	int startBulletRow;
+	int startBulletColumn;
+	int flagSingleBulletDraw = 0;
+	int flagAutoBulletDraw = 0;
+	int flagBrustBulletDraw = 0;
+	int flagChangeBulletPos = 0;
+	int jumpLimitCounter = 0;
+	int sideJumpSize = 4;
+	int walkingStep = 3;
+	int bulletsArray[100];
+	int flagCheckLadder = 0;
+	int checkRightFlag = 0;
+	int checkLeftFlag = 0;
+	int checkUpFlag = 0;
+	int checkDownFlag = 0;
+
+	char heroSingleBullet = 248;
+
+	void Reset()
+	{
+		this->heroRow = 10;
+		this->heroColumn = 0;
+		this->bulletRow = heroRow + 5;
+		this->bulletColumn = heroColumn + 12;
+		this->heroSingleBullet = 248;
+		this->flagSingleBulletDraw = 0;
+		this->flagBrustBulletDraw = 0;
+		this->flagAutoBulletDraw = 0;
+		this->flagChangeBulletPos = 0;
+	}
+
+	void UpdateBulletPosition()
+	{
+		if (this->flagSingleBulletDraw == 0)
+		{
+			this->bulletRow = this->heroRow + 5;
+			this->bulletColumn = this->heroColumn + 12;
+		}
+	}
+
+	void fillBulletsArray()
+	{
+		for (i = 0; i < 100; i++)
+			this->bulletsArray[i] = 0;
+	}
+
+	void setBulletsPositions()
+	{
+		bulletRow = this->heroRow + 5;
+		bulletColumn = this->heroColumn + 12;
+
+		bulletsArray[a] = this->heroRow + 5;
+		bulletsArray[a + 1] = this->heroColumn + 12;
+	}
+
+
+public:
+	int firingMode = 1;
+
+	void DrawHero()
+	{
+		r = this->heroRow;
+		c = this->heroColumn;
+
+		for (i = 0; this->draw[i] != '\0'; i++)
+		{
+			if (this->draw[i] != 10)
+				map[r][c++] = this->draw[i];
+
+			if (this->draw[i] == 10)
+			{
+				r++;
+				c = this->heroColumn;
+			}
+		}
+	}
+
+	void BulletMove()
+	{
+		if (this->flagAutoBulletDraw == 1)
+		{
+			this->bulletsArray[i + 1] += 3;
+		}
+		else
+		{
+			this->bulletColumn += 3;
+
+			//if (this->bulletColumn > this->startBulletColumn + 10)
+			//{
+			//	this->flagSingleBulletDraw = 0;
+			//	this->flagBrustBulletDraw = 0;
+			//	this->flagAutoBulletDraw = 0;
+			//	this->UpdateBulletPosition();
+			//}
+		}
+	}
+
+	void BulletDraw()
+	{
+		if (this->flagSingleBulletDraw == 1)
+		{
+
+
+			map[this->bulletRow][this->bulletColumn] = heroSingleBullet;
+			this->BulletMove();
+		}
+
+		if (this->flagBrustBulletDraw == 1)
+		{
+
+			map[this->bulletRow - 1][this->bulletColumn + 1] = this->heroSingleBullet;
+			map[this->bulletRow][this->bulletColumn] = this->heroSingleBullet;
+			map[this->bulletRow + 1][this->bulletColumn + 1] = this->heroSingleBullet;
+			this->BulletMove();
+		}
+
+		if (this->flagAutoBulletDraw == 1)
+		{
+
+			for (i = 0; i < 100 - 4; i += 3)
+			{
+				if (this->bulletsArray[i + 2] == 1)
+				{
+					map[this->bulletsArray[i]][this->bulletsArray[i + 1]] = this->heroSingleBullet;
+					this->BulletMove();
+				}
+			}
+
+		}
+	}
+	
+	void CheckLadderPosition()
+	{
+		
+		if (this->heroColumn + 11 > art.getLadderColumn() - 3)
+			this->flagCheckLadder = 1;
+
+		else if (this->heroColumn <= art.getLadderColumn() + 18 && this->heroColumn > art.getLadderColumn() + 15)
+			this->flagCheckLadder = 1;
+
+		else
+			this->flagCheckLadder = 0;
+	}
+	void CheckLadderUp()
+	{
+		if (flagCheckLadder == 1 && this->heroRow - 4> art.getLadderRow()-4)
+		{
+			checkUpFlag = 1;
+		}
+	}
+	void CheckLadderDown()
+	{
+		if (flagCheckLadder == 1 && this->heroRow +9 < art.getLadderRow()+19)
+		{
+			checkDownFlag = 1;
+		}
+		else 
+			checkDownFlag = 0;
+	}
+	void CheckUp()
+	{
+		checkUpFlag=1;
+		for (k = heroColumn; k < heroColumn + 12; k++)
+		{
+			for (i = 1; i <= 4; i++)
+			{
+				if (map[this->heroRow -i][k] != ' ')
+				{
+					checkUpFlag = 0;
+					break;
+				}
+
+			}
+		}
+		
+	}
+	void HeroActions()
+	{
+		
+		if (GetAsyncKeyState(VK_LEFT))
+		{
+			CheckLadderPosition();
+			checkLeftFlag = 1;
+			for (k = this->heroRow; k < this->heroRow + 8; k++)
+			{
+				for (i = 1; i <= this->walkingStep; i++)
+				{
+					if (map[k][this->heroColumn - i] != ' ')
+					{
+						checkLeftFlag = 0;
+						break;
+					}
+
+				}
+
+			}
+			if (checkLeftFlag == 1 || flagCheckLadder == 1)
+			{
+				this->heroColumn -= this->walkingStep;
+				//this->UpdateBulletPosition();
+			}
+
+			this->UpdateBulletPosition();
+		}
+
+		if (GetAsyncKeyState(VK_RIGHT))
+		{
+			CheckLadderPosition();
+			checkRightFlag = 1;
+			for (k = heroRow; k < heroRow + 8; k++)
+			{
+				for (i = 1; i <= this->walkingStep; i++)
+				{
+					if (map[k][heroColumn + 11 + i] != ' ')
+					{
+						checkRightFlag = 0;
+						break;
+					}
+
+				}
+
+			}
+			if (checkRightFlag == 1 || flagCheckLadder == 1)
+			{
+				this->heroColumn += this->walkingStep;
+				//this->UpdateBulletPosition();
+			}
+			this->UpdateBulletPosition();
+		}
+
+		if (GetAsyncKeyState(VK_UP))
+		{
+			CheckUp();
+			CheckLadderUp();
+			if(this->checkUpFlag==1)
+			{
+			this->jumpLimitCounter++;
+			if (this->jumpLimitCounter <= 2)
+			{
+				this->heroRow -= 4;
+				this->DrawHero();
+				art.DrawSky();
+				art.DrawGround();
+				art.DrawObstacle();
+				art.Drawladder();
+				ClearMap();
+				ClearMap();
+				this->UpdateBulletPosition();
+			}
+			}
+		}
+
+
+		if (GetAsyncKeyState(VK_DOWN))
+		{
+			CheckUp();
+			CheckLadderDown();
+			if (checkDownFlag == 1)
+			{
+				this->heroRow ++;
+				this->UpdateBulletPosition();
+			}
+		}
+
+		// Key F
+		if (GetAsyncKeyState(0x46))
+		{
+			this->setBulletsPositions();
+
+			if (firingMode == 1)
+			{
+
+				this->flagBrustBulletDraw = 0;
+				this->flagAutoBulletDraw = 0;
+				this->flagSingleBulletDraw = 1;
+
+				this->startBulletColumn = this->bulletColumn;
+			}
+
+			if (firingMode == 2)
+			{
+				this->flagSingleBulletDraw = 0;
+				this->flagAutoBulletDraw = 0;
+				this->flagBrustBulletDraw = 1;
+
+				this->startBulletColumn = this->bulletColumn;
+			}
+
+			if (firingMode == 3)
+			{
+
+				this->flagSingleBulletDraw = 0;
+				this->flagBrustBulletDraw = 0;
+				this->flagAutoBulletDraw = 1;
+
+				cthbh++;
+
+				if (cthbh > 1)
+				{
+					if (a >= 96)
+						a = 0;
+					a += 3;
+					this->bulletsArray[a + 2] = 1;
+				}
+				else
+				{
+					this->fillBulletsArray();
+					this->setBulletsPositions();
+
+					// flag auto
+					this->bulletsArray[a + 2] = 1;
+				}
+			}
+		}
+	}
+
+	inline int getHeroRow() { return this->heroRow; }
+	inline int getHeroColumn() { return this->heroColumn; }
+	inline int getJumpLimitCounter() { return this->jumpLimitCounter; }
+
+	void setHeroRowTo(int _heroRow) { this->heroRow = _heroRow; }
+	void setHeroColumnTo(int _heroColumn) { this->heroColumn = _heroColumn; }
+	void setJumpLimitCounterTo(int _jumpLimitCounter) { this->jumpLimitCounter = _jumpLimitCounter; }
+};
+
+Hero hero;
+
+void PrintingMap()
+{
+	b = hero.getHeroColumn();
+
+	if (b - 50 < 0)
+	{
+		b = 50;
+	}
+
+	system("cls");
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
+	for (r = 0; r < rows; r++)
+	{
+		for (c = b - 50; c < b + 250; c++)
+		{
+			if (r > 10 && r < 30)
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+
+			if (r > 35)
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
+			cout << map[r][c];
+		}
+	}
+}
+
+void Gravity(int gravityRow, int gravityColumn)
+{
+	if (map[gravityRow + 9][gravityColumn] != ' ' || map[gravityRow + 9][gravityColumn + 13] != ' ')
+		hero.setJumpLimitCounterTo(0);
+
+
+	if (map[gravityRow + 9][gravityColumn] == ' ' && map[gravityRow + 9][gravityColumn + 13] == ' ')
+	{
+		gravityRow += 2;
+		hero.setHeroRowTo(gravityRow);
+	}
+}
+
+void GeneralDraw()
+{
+	art.DrawSky();
+	art.DrawGround();
+	art.DrawObstacle();
+	art.Drawladder();
+	art.DrawBatEnemy();
+	hero.DrawHero();
+	hero.BulletDraw();
+}
+
+void SetUp()
+{
+	LevelPointer = 0;
+	GameOver = false;
+	PlayerDead = false;
+}
+
+void Menu(int i)
+{
+	switch (i)
+	{
+	case 0:
+		cout <<
+
+
+			"                                                                           _____              _____               \n"
+			"                                                                          |   | |___ _ _ _   |   __|___ _____ ___ \n"
+			"                                                                          | | | | -_| | | |  |  |  | .'|     | -_|\n"
+			"                                                                          |_|___|___|_____|  |_____|__,|_|_|_|___|\n\n";
+
+
+
+		break;
+
+	case 1:
+		cout <<
+
+
+
+			"                                                                         _____                  _____     _   _     \n"
+			"                                                                        |   __|___ _____ ___   |   __|_ _|_|_| |___ \n"
+			"                                                                        |  |  | .'|     | -_|  |  |  | | | | . | -_|\n"
+			"                                                                        |_____|__,|_|_|_|___|  |_____|___|_|___|___|\n\n";
+
+
+
+		break;
+
+	case 2:
+		cout <<
+
+
+			"                                                                                    _____     _ _____ \n"
+			"                                                                                   |     |_ _|_|_   _|\n"
+			"                                                                                   |  |  | | | | | |  \n"
+			"                                                                                   |__  _|___|_| |_|  \n"
+			"                                                                                     |__|            \n\n";
+
+		break;
+
+	default:
+		break;
+	}
+
+
+}
+
+void Typing()
+{
+	system("cls");
+	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+	string typing = "                                                     on 24 september ,2018 haru , An 11 year old boy first felt the super powers\n\n\n"
+		"                                            he had but he wan not confindet at all that he can help someone or change something in the world\n\n\n"
+		"                                                let's find out what haru can do to make history and to make his name engraved in history \n\n\n"
+		"                                     'if you think you are too small to make a diffrence try going to bed with a mosquito in the room' said by Dalaia Lama \n\n\n";
+
+	PlaySound(TEXT("sounds\\typing.wav"), NULL, SND_ASYNC);
+	for (int i = 0; i < typing.length(); i++)
+	{
+		cout << typing[i];
+
+		if (typing[i] != ' ' && typing[i + 1] != ' ')
+			Sleep(100);
+	}
+	PlaySound(TEXT("sounds\\silence.wav"), NULL, SND_ASYNC);
+
+}
+
+void CurrentFiringMode()
+{
+	// Key T
+	if (GetAsyncKeyState(0x54))
+	{
+		hero.firingMode++;
+		if (hero.firingMode == 4)
+			hero.firingMode = 1;
+	}
+}
+
+int GetLevel()
+{
+	while (true)
+	{
+		system("cls");
+
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
+		cout << "\n\n\n\n\n\n\n"
+
+
+			"                                                        .----------------.  .----------------.  .-----------------. .----------------. \n"
+			"	                                               | .--------------. || .--------------. || .--------------. || .--------------. |\n"
+			"                                                       | | ____    ____ | || |  _________   | || | ____  _____  | || | _____  _____ | |\n"
+			"	                                               | ||_   \\  /   _|| || | |_   ___  |  | || ||_   \\|_   _| | || ||_   _||_   _|| |\n"
+			"	                                               | |  |   \\/   |  | || |   | |_  \\_|  | || |  |   \\ | |   | || |  | |    | |  | |\n"
+			"	                                               | |  | |\\  /| |  | || |   |  _|  _   | || |  | |\\ \\| |   | || |  | '    ' |  | |\n"
+			"	                                               | | _| |_\\/_| |_ | || |  _| |___/ |  | || | _| |_\\   |_  | || |   \\ `--' /   | |\n"
+			"	                                               | ||_____||_____|| || | |_________|  | || ||_____|\\____| | || |    `.__.'    | |\n"
+			"	                                               | |              | || |              | || |              | || |              | |\n"
+			"	                                               | '--------------' || '--------------' || '--------------' || '--------------' |\n"
+			"                                                        '----------------'  '----------------'  '----------------'  '----------------' \n\n\n\n";
+
+		for (int i = 0; i < 3; i++)
+		{
+			if (i == LevelPointer)
+			{
+				if (i != 2)
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
+				else
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);
+
+				Menu(i);
+			}
+			else
+			{
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+				Menu(i);
+			}
+		}
+
+		while (true)
+		{
+			if (GetAsyncKeyState(VK_UP))
+			{
+				LevelPointer--;
+				PlaySound(TEXT("sounds\\SwitchMenu.wav"), NULL, SND_ASYNC);
+
+				if (LevelPointer == -1)
+				{
+					LevelPointer = 2;
+				}
+				break;
+			}
+			else if (GetAsyncKeyState(VK_DOWN))
+			{
+				LevelPointer++;
+				PlaySound(TEXT("sounds\\SwitchMenu.wav"), NULL, SND_ASYNC);
+
+				if (LevelPointer == 3)
+				{
+					LevelPointer = 0;
+				}
+				break;
+			}
+			else if (GetAsyncKeyState(VK_RETURN))
+			{
+				PlaySound(TEXT("sounds\\EnterKey.wav"), NULL, SND_ASYNC);
+
+				switch (LevelPointer)
+				{
+				case 0:
+					return 1;
+
+				case 1:
+					return 2;
+
+				case 2:
+					return 3;
+				}
+			}
+		}
+		Sleep(60);
+	}
+}
+
+void يُتبع()
+{
+	system("cls");
+	cout << "\n\n\n\n\n\n\n\n";
+	cout <<
+
+
+
+
+		"                                                                                                           @@@@@@@@                         \n"
+		"                                                                                                           @@@@@@@@                          \n"
+		"                                                                                                           @@@@@@@@                          \n"
+		"                                                                                                                                             \n"
+		"                                                                                                           @@@@@@@@                          \n"
+		"                                                                                                           @@@@@@@@                          \n"
+		"                                                                                                           @@@@@@@@                          \n"
+		"                                                             @@@@@@@@@@@                                                                     \n"
+		"                                                          @@@@@@@@@@@@@@@@@             @@@@@@@            @@@@@@@@           @@@@@@@@       \n"
+		"                                                        @@@@@@@@@@@@@@@@@@@@            @@@@@@@            @@@@@@@@           @@@@@@@@       \n"
+		"                                                       @@@@@@@        @@@@@@@           @@@@@@@            @@@@@@@@           @@@@@@@@       \n"
+		"                                                       @@@@@@@        @@@@@@            @@@@@@@            @@@@@@@@           @@@@@@@@       \n"
+		"                                                       @@@@@@@                          @@@@@@@            @@@@@@@@           @@@@@@@@       \n"
+		"                                                       @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       \n"
+		"                                                         #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       \n"
+		"                                                       @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@        \n"
+		"                                                     .@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@          \n"
+		"                                                     %@@@@@@%                                                                                \n"
+		"                                                     (@@@@@@@@%##(((((((((*.           @@@@@                            .#@@#    /@@%,       \n"
+		"                                                      &@@@@@@@@@@@@@@@@@@@@@@&        @@@@@@@                          /@@@@@@, @@@@@@%      \n"
+		"                                                       ,@@@@@@@@@@@@@@@@@@@@@@        @@@@@@@(                          %@@@@%  *@@@@@.      \n"
+		"                                                           ,/%@@@@@@@@@@@@%/.           .,,                                                  \n\n\n\n\n\n\n\n\n\n\n\n\n";
+}
+
+void هيا_بنا_نلعب()
+{
+	while (!GameOver)
+	{
+		SetUp();
+
+		switch (GetLevel())
+		{
+		case 1:
+
+			//Typing();
+
+			while (!PlayerDead)
+			{
+				CurrentFiringMode();
+				ClearMap();
+				GeneralDraw();
+				PrintingMap();
+				//cout << hero.firingMode << endl;
+				hero.HeroActions();
+				Gravity(hero.getHeroRow(), hero.getHeroColumn());
+				//hero.UpdateBulletPosition();
+			}
+
+			break;
+
+		case 2:
+
+			break;
+
+		case 3:
+			يُتبع();
+			GameOver = true;
+			break;
+		}
+	}
+}
+
+int main()
+{
+	هيا_بنا_نلعب();
+}

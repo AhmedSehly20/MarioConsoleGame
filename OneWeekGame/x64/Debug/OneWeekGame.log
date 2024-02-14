@@ -1,0 +1,15 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (OneWeekGame.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  TheGame.cpp
+D:\My Work\Study\Semester3\Cs102\Hacking to the game\MarioConsoleGame\OneWeekGame\TheGame.cpp(651,27): warning C4309: 'initializing': truncation of constant value
+D:\My Work\Study\Semester3\Cs102\Hacking to the game\MarioConsoleGame\OneWeekGame\TheGame.cpp(652,22): warning C4309: 'initializing': truncation of constant value
+D:\My Work\Study\Semester3\Cs102\Hacking to the game\MarioConsoleGame\OneWeekGame\TheGame.cpp(876,23): warning C4309: 'initializing': truncation of constant value
+D:\My Work\Study\Semester3\Cs102\Hacking to the game\MarioConsoleGame\OneWeekGame\TheGame.cpp(943,19): warning C4309: 'initializing': truncation of constant value
+D:\My Work\Study\Semester3\Cs102\Hacking to the game\MarioConsoleGame\OneWeekGame\TheGame.cpp(1093,26): warning C4309: 'initializing': truncation of constant value
+D:\My Work\Study\Semester3\Cs102\Hacking to the game\MarioConsoleGame\OneWeekGame\TheGame.cpp(1101,28): warning C4309: '=': truncation of constant value
+D:\My Work\Study\Semester3\Cs102\Hacking to the game\MarioConsoleGame\OneWeekGame\TheGame.cpp(1173,7): warning C4101: 'batHeal': unreferenced local variable
+D:\My Work\Study\Semester3\Cs102\Hacking to the game\MarioConsoleGame\OneWeekGame\TheGame.cpp(1859,14): warning C4309: 'initializing': truncation of constant value
+D:\My Work\Study\Semester3\Cs102\Hacking to the game\MarioConsoleGame\OneWeekGame\TheGame.cpp(2374,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\My Work\Study\Semester3\Cs102\Hacking to the game\MarioConsoleGame\OneWeekGame\TheGame.cpp(2405,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\My Work\Study\Semester3\Cs102\Hacking to the game\MarioConsoleGame\OneWeekGame\TheGame.cpp(2511,18): warning C4129: 'd': unrecognized character escape sequence
+D:\My Work\Study\Semester3\Cs102\Hacking to the game\MarioConsoleGame\OneWeekGame\TheGame.cpp(2514,18): warning C4129: 'g': unrecognized character escape sequence
+  OneWeekGame.vcxproj -> D:\My Work\Study\Semester3\Cs102\Hacking to the game\MarioConsoleGame\x64\Debug\MarioConsoleGame.exe
